@@ -1,6 +1,7 @@
 body {
     background-color: antiquewhite;
     color: white;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 .container {
@@ -71,9 +72,14 @@ body {
 #clear {
     grid-column: 1/3;
 }
+#equal{
+    grid-column: 4/5;
+}
 
-#dot {}
+#dot {
+    grid-column: 3/4;
+}
 
 #add {
-    grid-column-start: 4;
+    grid-column: 4/5;
 }
