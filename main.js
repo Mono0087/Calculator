@@ -90,17 +90,20 @@ calcBox.addEventListener('click', (e) => {
     } else if (btnClasses.contains('operation')) {
         currentNum = '';
         if (e.target.id === 'equal') {
-            result = operate(firstNum, secondNum, currOperation);
-            firstNum = result;
-            secondNum = undefined;
-            currOperation = undefined;
+            if(secondNum){
+
+                result = operate(firstNum, secondNum, currOperation);
+                firstNum = result;
+                secondNum = undefined;
+                currOperation = undefined;
+            }
         } else {
             result = operate(firstNum, secondNum, currOperation);
             if (result) firstNum = result;
             currOperation = e.target.id;
             secondNum = undefined;
         }
-        if (result) updateOutput(result);
+        if (result!==undefined||result===0) updateOutput(result);
     }
 
 
