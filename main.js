@@ -22,7 +22,7 @@ function multiply(a, b) {
 }
 
 function clear() {
-    currentNum = firstNum;
+    currentNum = '';
     firstNum = 0;
     secondNum = undefined;
     result = undefined;
