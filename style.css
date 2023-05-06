@@ -60,11 +60,11 @@ body {
     column-gap: 5px;
 }
 
-.controls {
+.controls,.operation {
     background-color: rgb(231, 142, 142);
 }
 
-.controls:hover {
+.controls:hover, .operation:hover {
     background-color: rgb(218, 111, 111);
 }
 

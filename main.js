@@ -2,7 +2,6 @@ const output = document.querySelector('#output');
 const calcBox = document.querySelector('.box');
 const dotBtn = document.querySelector('#dot');
 
-
 let firstNum = 0;
 let secondNum = undefined;
 let currOperation = undefined;
@@ -21,22 +20,32 @@ function multiply(a, b) {
     return a * b;
 }
 
+
+function operate(a, b, operation) {
+    if (!secondNum) {
+
+    } else {
+        switch (operation) {
+            case 'add':
+                return add(a, b);
+            case 'subtract':
+                return subtract(a, b);
+            case 'multiply':
+                return multiply(a, b);
+            case 'divide':
+                return divide(a, b);
+        }
+    }
+}
+
 function clear() {
     currentNum = '';
     firstNum = 0;
     secondNum = undefined;
+    currOperation = undefined;
     result = undefined;
     if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
     output.innerText = 0;
-
-}
-
-function equals(a, b, operation) {
-    switch (operation) {
-        case 'add':
-            return add(a, b);
-            break;
-    }
 }
 
 let currentNum = '';
@@ -64,18 +73,39 @@ function updateOutput(num) {
     output.innerText = num;
 }
 
-calcBox.addEventListener('click', (e) => {
-    if (currOperation) {// If none operation in time
 
-    } else {// If operation take place
-        if (e.target.classList.contains('number')) {
+calcBox.addEventListener('click', (e) => {
+    let btnClasses = e.target.classList;
+
+
+    if (btnClasses.contains('number')) {
+        if (currOperation) {
+            secondNum = +getCurrent(e.target.innerText)
+        } else {
             firstNum = +getCurrent(e.target.innerText);
-            updateOutput(currentNum);
-        } else if (e.target.classList.contains('controls')) {
-            if (e.target.id === 'clear') {
-                clear();
-            }
         }
+        updateOutput(currentNum);
+
+
+    } else if (btnClasses.contains('operation')) {
+        currentNum = '';
+        if (e.target.id === 'equal') {
+            result = operate(firstNum, secondNum, currOperation);
+            firstNum = result;
+            secondNum = undefined;
+            currOperation = undefined;
+        } else {
+            result = operate(firstNum, secondNum, currOperation);
+            if (result) firstNum = result;
+            currOperation = e.target.id;
+            secondNum = undefined;
+        }
+        if (result) updateOutput(result);
+    }
+
+
+    if (e.target.id === 'clear') {
+        clear();
     }
 
     let operObj = { firstNum, secondNum, currOperation, result };
