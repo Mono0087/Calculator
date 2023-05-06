@@ -41,13 +41,18 @@ function equals(a, b, operation) {
 
 let currentNum = '';
 function getCurrent(num) {
-    if (num !== '0' && currentNum.charAt(0) === '0') {
+    // Check 'dot' and '0' for output
+    if (num !== '0' && currentNum.charAt(0) === '0' && currentNum.charAt(1) !== '.') {
         currentNum = currentNum.substring(1, currentNum.length)
     } else if (num === '0' && currentNum === '0') {
         currentNum = '';
     }
     if (num === '.') {
-        currentNum += num;
+        if (currentNum === '') {
+            currentNum = 0 + num;
+        } else {
+            currentNum += num;
+        }
         document.querySelector('#dot').setAttribute('disabled', 'disabled')
     } else {
         currentNum += num;
