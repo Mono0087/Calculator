@@ -14,7 +14,7 @@ function subtract(a, b) {
     return a - b;
 }
 function divide(a, b) {
-    return a / b;
+    return b === 0 ? NaN : (a / b);
 }
 function multiply(a, b) {
     return a * b;
@@ -22,8 +22,8 @@ function multiply(a, b) {
 
 
 function operate(a, b, operation) {
-    if (!secondNum) {
-
+    console.log(a, b, operation)
+    if (b === undefined) {
     } else {
         switch (operation) {
             case 'add':
@@ -50,6 +50,7 @@ function clear() {
 
 let currentNum = '';
 function getCurrent(num) {
+
     // Check 'dot' and '0' for output
     if (num !== '0' && currentNum.charAt(0) === '0' && currentNum.charAt(1) !== '.') {
         currentNum = currentNum.substring(1, currentNum.length)
@@ -66,6 +67,12 @@ function getCurrent(num) {
     } else {
         currentNum += num;
     }
+
+    // If number overflows display
+    if (currentNum.length > 16) {
+        currentNum = currentNum.substring(0, 16);
+    }
+
     return currentNum;
 }
 
@@ -90,8 +97,7 @@ calcBox.addEventListener('click', (e) => {
     } else if (btnClasses.contains('operation')) {
         currentNum = '';
         if (e.target.id === 'equal') {
-            if(secondNum){
-
+            if (secondNum !== undefined) {
                 result = operate(firstNum, secondNum, currOperation);
                 firstNum = result;
                 secondNum = undefined;
@@ -99,17 +105,23 @@ calcBox.addEventListener('click', (e) => {
             }
         } else {
             result = operate(firstNum, secondNum, currOperation);
-            if (result) firstNum = result;
+            if (result !== undefined) firstNum = result;
             currOperation = e.target.id;
             secondNum = undefined;
+            if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
         }
-        if (result!==undefined||result===0) updateOutput(result);
-    }
-
-
-    if (e.target.id === 'clear') {
+        if (result !== undefined || result === 0) {
+            if (result.toString().length > 16) {
+                result = +result.toString().slice(0, 16)
+            }
+            updateOutput(result);
+        }
+    } else if (e.target.id === 'clear') {
         clear();
     }
+
+
+
 
     let operObj = { firstNum, secondNum, currOperation, result };
     console.log(operObj, currentNum)
