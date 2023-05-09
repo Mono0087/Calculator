@@ -79,6 +79,11 @@ function back() {
         if (!currentNum.includes('.')) {
             if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
         }
+        if (currentNum === '-' || currentNum === '-0' || currentNum === '-0.') {
+            if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
+
+            currentNum = '';
+        }
         if (currentNum.length === 0) {
             updateOutput(0)
         } else {
@@ -89,9 +94,27 @@ function back() {
         } else {
             firstNum !== '' ? firstNum = +currentNum : firstNum = undefined;
         }
-    } else {
     }
+}
 
+function CurrSign() {
+    if (result !== undefined && result === firstNum) {
+        firstNum = -firstNum;
+        updateOutput(firstNum)
+    }
+    if (currOperation) {
+        if (Math.sign(+currentNum)) {
+            currentNum = (-currentNum).toString();
+            secondNum = +currentNum;
+            updateOutput(secondNum)
+        }
+    } else {
+        if (Math.sign(+currentNum)) {
+            currentNum = (-currentNum).toString();
+            firstNum = +currentNum;
+            updateOutput(firstNum)
+        }
+    }
 }
 
 let currentNum = '';
@@ -163,10 +186,18 @@ calcBox.addEventListener('click', (e) => {
             }
             updateOutput(result);
         }
-    } else if (e.target.id === 'clear') {
-        clear();
-    } else if (e.target.id === 'back') {
-        back();
+    } else if (btnClasses.contains('controls')) {
+        switch (e.target.id) {
+            case 'clear':
+                clear();
+                break;
+            case 'back':
+                back();
+                break;
+            case 'sign':
+                CurrSign();
+                break;
+        }
     }
 
 
