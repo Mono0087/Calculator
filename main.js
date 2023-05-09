@@ -99,20 +99,27 @@ function back() {
 
 function CurrSign() {
     if (result !== undefined && result === firstNum) {
-        firstNum = -firstNum;
-        updateOutput(firstNum)
-    }
-    if (currOperation) {
-        if (Math.sign(+currentNum)) {
-            currentNum = (-currentNum).toString();
-            secondNum = +currentNum;
-            updateOutput(secondNum)
+        if (Math.sign(firstNum)) {
+            result = -result;
+            firstNum = -firstNum;
+        } else {
+            firstNum = +firstNum;
+            result = +result;
         }
+        updateOutput(firstNum)
     } else {
-        if (Math.sign(+currentNum)) {
-            currentNum = (-currentNum).toString();
-            firstNum = +currentNum;
-            updateOutput(firstNum)
+        if (secondNum !== undefined) {
+            if (Math.sign(+currentNum)) {
+                currentNum = (-currentNum).toString();
+                secondNum = +currentNum;
+                updateOutput(secondNum)
+            }
+        } else {
+            if (Math.sign(+currentNum)) {
+                currentNum = (-currentNum).toString();
+                firstNum = +currentNum;
+                updateOutput(firstNum)
+            }
         }
     }
 }
