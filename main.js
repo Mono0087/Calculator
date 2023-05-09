@@ -14,28 +14,53 @@ function subtract(a, b) {
     return a - b;
 }
 function divide(a, b) {
-    return b === 0 ? NaN : (a / b);
+    return b === 0 ? NaN : a / b;
 }
 function multiply(a, b) {
     return a * b;
 }
 
-
 function operate(a, b, operation) {
-    console.log(a, b, operation)
-    if (b === undefined) {
-    } else {
+    let out;
+    if (b !== undefined) {
         switch (operation) {
             case 'add':
-                return add(a, b);
+                out = add(a, b);
+                break;
             case 'subtract':
-                return subtract(a, b);
+                out = subtract(a, b);
+                break;
             case 'multiply':
-                return multiply(a, b);
+                out = multiply(a, b);
+                break;
             case 'divide':
-                return divide(a, b);
+                out = divide(a, b);
+                break;
+        }
+        // For correct decimal result
+        if ((out % 1 != 0) && out !== NaN) {
+            if (a % 1 != 0 || b % 1 != 0) {
+                let afterDecimalA = a.toString().split('.')[1];
+                let afterDecimalB = b.toString().split('.')[1];
+                let afterDecimalLenA, afterDecimalLenB;
+                if (afterDecimalA !== undefined) {
+                    afterDecimalLenA = a.toString().split('.')[1].length;
+                } else {
+                    afterDecimalLenA = 0;
+                }
+                if (afterDecimalB !== undefined) {
+                    afterDecimalLenB = b.toString().split('.')[1].length;
+                } else {
+                    afterDecimalLenB = 0;
+                }
+                afterDecimalLenA > afterDecimalLenB ? out = out.toFixed(afterDecimalLenA): out = out.toFixed(afterDecimalLenB);
+            } else {
+                out = out.toPrecision(2);
+            }
         }
     }
+
+    return out;
 }
 
 function clear() {
@@ -63,7 +88,7 @@ function getCurrent(num) {
         } else {
             currentNum += num;
         }
-        document.querySelector('#dot').setAttribute('disabled', 'disabled')
+        document.querySelector('#dot').setAttribute('disabled', 'disabled');
     } else {
         currentNum += num;
     }
@@ -77,13 +102,12 @@ function getCurrent(num) {
 }
 
 function updateOutput(num) {
-    output.innerText = num;
+    output.innerText = String(num);
 }
 
 
 calcBox.addEventListener('click', (e) => {
     let btnClasses = e.target.classList;
-
 
     if (btnClasses.contains('number')) {
         if (currOperation) {
@@ -93,7 +117,6 @@ calcBox.addEventListener('click', (e) => {
         }
         updateOutput(currentNum);
 
-
     } else if (btnClasses.contains('operation')) {
         currentNum = '';
         if (e.target.id === 'equal') {
@@ -102,6 +125,7 @@ calcBox.addEventListener('click', (e) => {
                 firstNum = result;
                 secondNum = undefined;
                 currOperation = undefined;
+                if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
             }
         } else {
             result = operate(firstNum, secondNum, currOperation);
@@ -111,6 +135,7 @@ calcBox.addEventListener('click', (e) => {
             if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
         }
         if (result !== undefined || result === 0) {
+
             if (result.toString().length > 16) {
                 result = +result.toString().slice(0, 16)
             }

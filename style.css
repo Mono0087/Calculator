@@ -87,6 +87,10 @@ body {
 #dot {
     grid-column: 3/4;
 }
+#dot:disabled:hover{
+    background-color: beige;
+}
+
 
 #add {
     grid-column: 4/5;
