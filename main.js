@@ -53,7 +53,7 @@ function operate(a, b, operation) {
                 } else {
                     afterDecimalLenB = 0;
                 }
-                afterDecimalLenA > afterDecimalLenB ? out = out.toFixed(afterDecimalLenA): out = out.toFixed(afterDecimalLenB);
+                afterDecimalLenA > afterDecimalLenB ? out = out.toFixed(afterDecimalLenA) : out = out.toFixed(afterDecimalLenB);
             } else {
                 out = out.toPrecision(2);
             }
@@ -71,6 +71,27 @@ function clear() {
     result = undefined;
     if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
     output.innerText = 0;
+}
+
+function back() {
+    currentNum = currentNum.slice(0, -1);
+    if (result === undefined) {
+        if (!currentNum.includes('.')) {
+            if (dotBtn.hasAttribute('disabled')) dotBtn.removeAttribute('disabled');
+        }
+        if (currentNum.length === 0) {
+            updateOutput(0)
+        } else {
+            updateOutput(currentNum);
+        }
+        if (currOperation) {
+            currentNum !== '' ? secondNum = +currentNum : secondNum = undefined;
+        } else {
+            firstNum !== '' ? firstNum = +currentNum : firstNum = undefined;
+        }
+    } else {
+    }
+
 }
 
 let currentNum = '';
@@ -115,6 +136,7 @@ calcBox.addEventListener('click', (e) => {
         } else {
             firstNum = +getCurrent(e.target.innerText);
         }
+        result = undefined;
         updateOutput(currentNum);
 
     } else if (btnClasses.contains('operation')) {
@@ -143,6 +165,8 @@ calcBox.addEventListener('click', (e) => {
         }
     } else if (e.target.id === 'clear') {
         clear();
+    } else if (e.target.id === 'back') {
+        back();
     }
 
 
