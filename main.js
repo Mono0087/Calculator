@@ -54,8 +54,8 @@ function operate(a, b, operation) {
                     afterDecimalLenB = 0;
                 }
                 afterDecimalLenA > afterDecimalLenB ? out = out.toFixed(afterDecimalLenA) : out = out.toFixed(afterDecimalLenB);
-            } else {
-                out = out.toPrecision(2);
+            } else  {
+                out = +out.toFixed(2);
             }
         }
     }
